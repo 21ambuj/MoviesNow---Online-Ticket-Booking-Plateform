@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Circular Slider</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #3e3e3e;
+      height: 40vh; /* Ensure the height takes up the full viewport */
+      display: flex;
+      flex-direction: column; /* Stack header and slider vertically */
+      justify-content: center;
+      align-items: center;
+      perspective: 1500px;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    header {
+      width: 100%;
+      background-color: white;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 20;
+    }
+
+    .scene {
+      width: 700px;
+      height: 700px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      transition: transform 0.3s ease-out;
+      cursor: grab;
+      margin-top: 70px; /* Adjust for header height */
+    }
+
+    .image {
+      width: 350px;
+      height: 350px;
+      position: absolute;
+      top: 50%;
+      left: 35%;
+      transform-origin: center center -250px; /* Closer to center for less gap */
+      transition: transform 1s ease-in-out;
+    }
+
+    .image img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      border: 4px solid white;
+      border-radius: 18px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    }
+
+    .center-box {
+      width: 160px;
+      height: 160px;
+      background: white;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: black;
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+<header>
+    Welcome to Our Gallery
+    <nav>
+    <a href="index.php" class="text-blue-500">Back to Home</a>
+    </nav>
+</header>
+  <div class="scene" id="slider">
+    <div class="image"><img src="img/chennaiExpress.avif" alt="Chennai Express"></div>
+    <div class="image"><img src="img/Entertainment.jpg" alt="Entertainment"></div>
+    <div class="image"><img src="img/Jawan.jpg" alt="Jawan"></div>
+    <div class="image"><img src="img/Robot.jpg" alt="Robot"></div>
+    <div class="image"><img src="img/Theatre.jpg" alt="Theatre"></div>
+    <div class="image"><img src="img/theatre2.jpg" alt="Theatre 2"></div>
+  </div>
+
+  <script>
+    const scene = document.getElementById("slider");
+    const images = scene.querySelectorAll(".image");
+    let angle = 0;
+    let startX = 0;
+    let isDragging = false;
+    let idleTimer, autoRotateInterval;
+
+    function updateImages(currentAngle) {
+      images.forEach((img, i) => {
+        const rotation = i * (360 / images.length) + currentAngle;
+        img.style.transform = `rotateY(${rotation}deg) translateZ(150px)`; // less spacing
+      });
+    }
+
+    updateImages(angle); // Initial setup
+
+    function startAutoRotate() {
+      autoRotateInterval = setInterval(() => {
+        angle += 2.5; // faster rotation
+        updateImages(angle);
+      }, 30); // faster interval
+    }
+
+    function stopAutoRotate() {
+      clearInterval(autoRotateInterval);
+    }
+
+    function resetIdleTimer() {
+      stopAutoRotate();
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        startAutoRotate();
+      }, 2000); // start auto after 2s idle
+    }
+
+    scene.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      scene.style.cursor = "grabbing";
+      stopAutoRotate();
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (isDragging) {
+        isDragging = false;
+        scene.style.cursor = "grab";
+        resetIdleTimer();
+      }
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      let deltaX = e.clientX - startX;
+      startX = e.clientX;
+      angle += deltaX * 0.5;
+      updateImages(angle);
+    });
+
+    resetIdleTimer(); // start idle timer initially
+  </script>
+
+</body>
+</html>

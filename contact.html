@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Show.ai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-tr from-indigo-500 via-pink-500 to-cyan-400 flex items-center justify-center min-h-screen p-6">
+    <div class="w-full max-w-3xl p-6 bg-white shadow-lg rounded-2xl">
+        <a href="index.php" class="flex items-center font-bold justify-center  text-blue-500">
+            Home
+        </a>
+
+        <h2 class="text-2xl font-bold text-center mb-4">Contact Us</h2>
+        <p class="text-center text-gray-600 mb-6">Have questions or need support? Reach out to us!</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Get in Touch</h3>
+                <p class="text-black mt-2 ">
+                    📍 <a href="https://www.google.com/maps/place/Mirzapur,+Uttar+Pradesh,+India" target="_blank" class="text-black-600 hover:underline">Mirzapur, India</a> <br>
+                    📞 <a href="tel:+919369572534" class="text-black hover:underline">+91 9369572534</a> <br>
+                    ✉ <a href="mailto:ambuj20maurya@gmail.com" class="text-black hover:underline">moviesnow@gmail.com</a>
+                  </p>
+            </div>
+            
+            <form action="contactprocess.php" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Send a Message</h3>
+                    <input type="text" name="name" placeholder="Your Name" class="w-72 p-2 border rounded mb-3" required>
+                    <input type="email" name="email" placeholder="Your Email" class="w-72 p-2 border rounded mb-3" required>
+                    <textarea name="message" placeholder="Your Message" class="w-72 p-2 border rounded mb-3" required></textarea>
+                    <button type="submit" class="w-72 bg-gradient-to-r from-indigo-500 via-pink-500 to-cyan-400  text-white p-2 rounded">
+                        Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("userEmail").value;
+            const message = document.getElementById("message").value;
+            
+            if (name && email && message) {
+                alert("Message sent successfully!");
+            } else {
+                alert("Please fill out all fields.");
+            }
+        }
+    </script>
+</body>
+</html>
